@@ -15,7 +15,7 @@ import FloatingNav from "@/components/FloatingNav";
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={cn("min-h-screen bg-background font-sans antialiased text-foreground selection:bg-white/20", inter.variable, playfair.variable)}>
         <GuestbookProvider>
           {children}

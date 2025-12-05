@@ -3,7 +3,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useGuestbook } from "@/components/context/GuestbookContext";
-import Header from "@/components/Header";
 import dc from "@/lib/DataConfig";
 import { Letter, Thanks } from "@/components/content";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,6 @@ export default function LetterPage() {
 
   return (
     <div className="min-h-screen w-full bg-background transition-colors duration-500">
-      <Header />
       <div className="container mx-auto px-4 py-8 max-w-3xl space-y-12">
         
         {/* Pass props to mimic old behavior: show=false (form hidden), showLetter=true, available=false */}

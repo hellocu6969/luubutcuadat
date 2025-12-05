@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useGuestbook } from "@/components/context/GuestbookContext";
-import Header from "@/components/Header";
 import RichEditor from "@/components/ui/RichEditor";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Need to make sure I have Avatar component. If not, I'll use a simple div.
@@ -39,14 +38,12 @@ export default function WritePage() {
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <div className="min-h-screen w-full bg-[#09090b] text-white transition-colors duration-500 pb-20">
-      <Header />
-      
+    <div className="min-h-screen w-full bg-background text-foreground transition-colors duration-500 pb-20">
       <div className="container mx-auto px-4 py-12 max-w-4xl space-y-12">
         
         {/* Date Header */}
         <div className="text-center">
-            <p className="text-zinc-500 uppercase tracking-widest text-xs font-medium">{today}</p>
+            <p className="text-muted-foreground uppercase tracking-widest text-xs font-medium">{today}</p>
         </div>
 
         {/* Title Input */}
@@ -54,7 +51,7 @@ export default function WritePage() {
             <input
                 type="text"
                 placeholder="Blog Title"
-                className="w-full bg-transparent text-5xl md:text-7xl font-serif font-bold text-center placeholder:text-zinc-800 focus:outline-none focus:placeholder:text-zinc-800/50"
+                className="w-full bg-transparent text-5xl md:text-7xl font-serif font-bold text-center placeholder:text-muted-foreground/50 focus:outline-none focus:placeholder:text-muted-foreground/30"
                 value={data.title}
                 onChange={(e) => setData({ ...data, title: e.target.value })}
             />
@@ -62,7 +59,7 @@ export default function WritePage() {
 
         {/* Author Section */}
         <div className="flex flex-col items-center justify-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-zinc-800 overflow-hidden ring-2 ring-zinc-800 relative group">
+            <div className="w-16 h-16 rounded-full bg-muted overflow-hidden ring-2 ring-border relative group">
                  {/* Placeholder Avatar */}
                  <img src="https://github.com/shadcn.png" alt="Avatar" className="w-full h-full object-cover opacity-80" />
             </div>
@@ -71,14 +68,14 @@ export default function WritePage() {
                 <input
                     type="text"
                     placeholder="Your Name"
-                    className="block w-full bg-transparent text-center font-medium text-white placeholder:text-zinc-600 focus:outline-none"
+                    className="block w-full bg-transparent text-center font-medium text-foreground placeholder:text-muted-foreground focus:outline-none"
                     value={data.name}
                     onChange={(e) => setData({ ...data, name: e.target.value })}
                 />
                 <input
                     type="text"
                     placeholder="Role (e.g. Developer)"
-                    className="block w-full bg-transparent text-center text-sm text-zinc-500 placeholder:text-zinc-700 focus:outline-none"
+                    className="block w-full bg-transparent text-center text-sm text-muted-foreground placeholder:text-muted-foreground/70 focus:outline-none"
                     value={data.role}
                     onChange={(e) => setData({ ...data, role: e.target.value })}
                 />
@@ -106,7 +103,7 @@ export default function WritePage() {
                         onClick={handleSubmit} 
                         disabled={isSubmitting} 
                         size="lg"
-                        className="rounded-full px-12 py-6 text-lg font-medium bg-white text-black hover:bg-zinc-200 transition-transform active:scale-95"
+                        className="rounded-full px-12 py-6 text-lg font-medium shadow-lg hover:shadow-xl transition-all active:scale-95"
                     >
                         {isSubmitting ? "Publishing..." : "Publish Post"}
                         <Send className="ml-2 w-5 h-5" />
