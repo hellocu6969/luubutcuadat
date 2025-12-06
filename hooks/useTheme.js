@@ -11,11 +11,19 @@ export function useTheme() {
     
     if (savedTheme) {
       setTheme(savedTheme)
+      // Class already set by script, but ensure sync
       document.documentElement.classList.toggle("dark", savedTheme === "dark")
     } else if (isDark) {
       setTheme("dark")
       document.documentElement.classList.add("dark")
     }
+    
+    // Enable transitions after mount to avoid initial flash
+    const timer = setTimeout(() => {
+        document.body.classList.add("theme-transition")
+    }, 100)
+    
+    return () => clearTimeout(timer)
   }, [])
 
   const toggleTheme = () => {

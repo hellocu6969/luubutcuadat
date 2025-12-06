@@ -67,7 +67,11 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased overflow-x-hidden w-screen;
+  }
+
+  body.theme-transition {
+    @apply transition-colors duration-500 ease-in-out;
   }
 
   h1,
