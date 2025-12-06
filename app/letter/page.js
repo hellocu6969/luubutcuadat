@@ -8,6 +8,17 @@ import { Letter, Thanks } from "@/components/content";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, RefreshCcw } from "lucide-react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function LetterPage() {
   const router = useRouter();

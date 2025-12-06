@@ -8,15 +8,20 @@ import RichEditor from "@/components/ui/RichEditor";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"; // Need to make sure I have Avatar component. If not, I'll use a simple div.
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import { Send, RefreshCcw } from "lucide-react";
 import dc from "@/lib/DataConfig";
-import Submit from "@/components/content/Submit"; // We might reuse logic or inline it. Let's use the Submit component but we need to style it or pass a custom trigger? 
-// Actually, Submit.js has its own UI. I should probably refactor Submit.js to be a logic hook or just a button.
-// For now, I will use Submit component but mostly hide its UI and just use its logic? No, Submit.js is a Card. 
-// I should probably manually implement the submit logic here or refactor Submit.js.
-// Given the time, I'll implement the submit logic locally here or simpler: Update Submit.js to be invisible/customizable?
-// Better: JUST USE THE LOGIC in Submit.js. 
-// Actually, let's just rewrite the submit logic here to be clean for this page.
+import Submit from "@/components/content/Submit"; 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"; 
 
 export default function WritePage() {
   const router = useRouter();
@@ -33,6 +38,18 @@ export default function WritePage() {
 
   const handleContentChange = (html) => {
     setData({ ...data, message: html });
+  };
+
+  const handleResetData = () => {
+    const initialData = {
+        title: "",
+        name: "",
+        role: "",
+        message: "",
+    };
+    setData(initialData);
+    localStorage.removeItem("data");
+    toast.success("Đã xóa dữ liệu tạm! 🗑️");
   };
 
   // Get current date formatted
