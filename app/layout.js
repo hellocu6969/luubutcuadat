@@ -18,6 +18,7 @@ export const metadata = {
 
 import { GuestbookProvider } from "@/components/context/GuestbookContext";
 import FloatingNav from "@/components/FloatingNav";
+import { Toaster } from "sonner";
 
 export default function RootLayout({ children }) {
   return (
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
         <GuestbookProvider>
           {children}
           <FloatingNav />
+          <Toaster position="top-center" richColors />
         </GuestbookProvider>
       </body>
     </html>

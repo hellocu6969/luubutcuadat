@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import dc from "@/lib/DataConfig";
 import { Send, CheckCircle2 } from "lucide-react";
+import { toast } from "sonner";
 
 const Submit = ({
   setShowLetter,
@@ -23,34 +24,46 @@ const Submit = ({
   customRender 
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [testMode, setTestMode] = useState(false);
   const router = useRouter();
 
   const handleSubmit = () => {
     // Validation logic tailored for the new form
-    if (
-      (data.title && data.title.length >= 2) &&
-      (data.name && data.name.length >= 2) &&
-      (data.message && data.message.length >= 50) // Rich text html is long
-    ) {
-      submitForm();
-    } else {
-      alert("Vui lòng điền tiêu đề, tên và nội dung (ít nhất 1 câu)");
+  const handleSubmit = () => {
+    // Validation logic tailored for the new form
+    if (!data.title || data.title.length < 2) {
+        toast.error("Vui lòng nhập tiêu đề (ít nhất 2 ký tự)");
+        return;
     }
+    if (!data.name || data.name.length < 2) {
+        toast.error("Vui lòng nhập tên của cậu (ít nhất 2 ký tự)");
+        return;
+    }
+    // Check rich text content length stripping HTML tags approx
+    const strippedContent = data.message ? data.message.replace(/<[^>]*>?/gm, '') : "";
+    if (strippedContent.length < 10) {
+        toast.error("Hãy viết dài hơn một chút nhé (ít nhất 10 ký tự)");
+        return;
+    }
+    
+    submitForm();
   };
 
   const submitForm = async (event) => {
     setIsSubmitting(true);
+    const toastId = toast.loading("Đang gửi thư...");
     
     //get date
     const date = new Date();
     const day = date.getDate();
-    const month = date.getMonth() + 1;
+    // Copy logic from before
+    const m = date.getMonth() + 1;
     const year = date.getFullYear();
     const hour = date.getHours();
     const minute = String(date.getMinutes()).padStart(2, "0");
     const time = {
       day: day,
-      month: month,
+      month: m,
       year: year,
       hour: hour,
       minute: minute,
@@ -63,6 +76,8 @@ const Submit = ({
       localStorage.setItem("data", JSON.stringify(newData));
     }
 
+    // SKIP EMAIL IF TEST MODE
+    if (!testMode) {
       const emailData = {
         title: data.title || "No Title",
         name: data.name,
@@ -93,30 +108,37 @@ const Submit = ({
         
         if (!result.success) {
           console.error("Failed to send email:", result.error);
-          alert("Có lỗi xảy ra khi gửi thư. Vui lòng thử lại sau.");
+          toast.error("Gửi thư thất bại. Vui lòng thử lại!", { id: toastId });
           setIsSubmitting(false);
           return;
         }
       } catch (error) {
         console.error("Network error:", error);
-        alert("Có lỗi kết nối. Vui lòng thử lại sau.");
+        toast.error("Lỗi kết nối. Kiểm tra mạng nhé!", { id: toastId });
         setIsSubmitting(false);
         return;
       }
-    // }
+    } else {
+        console.log("Test Mode: Email sending skipped.");
+        // Simulated delay
+        await new Promise(r => setTimeout(r, 1000));
+    }
     
+    toast.success("Đã gửi thư thành công! Cảm ơn cậu", { id: toastId });
     setAvailable(false);
     setIsSubmitting(false);
     //scroll to top, smooth
     window.scrollTo({ top: 0, behavior: "smooth" });
     
     // REDIRECT TO LETTER PAGE
-    router.push("/letter");
+    setTimeout(() => {
+        router.push("/letter");
+    }, 1000); // Wait a bit for toast to show
   };
   
   // Custom Render Logic
   if (customRender) {
-      return customRender({ handleSubmit, isSubmitting });
+      return customRender({ handleSubmit, isSubmitting, testMode, setTestMode });
   }
 
   if (!available) return null;

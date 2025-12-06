@@ -98,16 +98,30 @@ export default function WritePage() {
                 setData={setData} 
                 setAvailable={setAvailable} 
                 available={available} 
-                customRender={({ handleSubmit, isSubmitting }) => (
-                    <Button 
-                        onClick={handleSubmit} 
-                        disabled={isSubmitting} 
-                        size="lg"
-                        className="rounded-full px-12 py-6 text-lg font-medium shadow-lg hover:shadow-xl transition-all active:scale-95"
-                    >
-                        {isSubmitting ? "Publishing..." : "Publish Post"}
-                        <Send className="ml-2 w-5 h-5" />
-                    </Button>
+                customRender={({ handleSubmit, isSubmitting, testMode, setTestMode }) => (
+                    <div className="flex flex-col items-center gap-4">
+                        {process.env.NODE_ENV === "development" && (
+                            <label className="flex items-center gap-2 cursor-pointer p-2 border border-dashed border-muted-foreground/50 rounded-md bg-muted/20">
+                                <input 
+                                    type="checkbox" 
+                                    checked={testMode} 
+                                    onChange={(e) => setTestMode(e.target.checked)}
+                                    className="w-4 h-4 accent-primary"
+                                />
+                                <span className="text-sm font-mono text-muted-foreground">Test Mode (No Email)</span>
+                            </label>
+                        )}
+                        
+                        <Button 
+                            onClick={handleSubmit} 
+                            disabled={isSubmitting} 
+                            size="lg"
+                            className="rounded-full px-12 py-6 text-lg font-medium shadow-lg hover:shadow-xl transition-all active:scale-95"
+                        >
+                            {isSubmitting ? "Sending..." : "Send to me"}
+                            <Send className="ml-2 w-5 h-5" />
+                        </Button>
+                    </div>
                 )}
              />
         </div>
