@@ -80,7 +80,7 @@ const Submit = ({
       const emailData = {
         title: data.title || "No Title",
         name: data.name,
-        role: data.role || "Guest",
+        role: data.role || "",
         myself: dc.myself,
         email: dc.email,
         date_day: time.day,
